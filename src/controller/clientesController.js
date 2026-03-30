@@ -31,7 +31,7 @@ async function BuscarPorId(req,res) {
         }
     } catch (erro){
         res.satus(500).json({
-            mensagem:`Erro ao buscar produto`,
+            mensagem:`Erro ao buscar cliente`,
             erro: erro.message
         });
     }
