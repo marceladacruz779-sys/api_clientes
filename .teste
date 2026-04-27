@@ -1,0 +1,15 @@
+create table topicos (
+idt serial primary key,
+disciplina varchar (50) not null,
+professor varchar (50) not null,
+descricao_t varchar (200) not null
+)
+
+create table questoes (
+idc serial primary key,
+topicoid integer references topicos (idt),
+enunciado varchar (500) not null,
+resposta varchar (500) not null,
+link_b varchar (500) not null,
+dtinclusao date not null
+)

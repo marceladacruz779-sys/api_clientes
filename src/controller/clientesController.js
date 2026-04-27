@@ -18,19 +18,19 @@ async function BuscarPorId(req,res) {
 
         if(isNaN(id)){
             return res.status(400).json({
-                mensagem: 'id invalido'
+                mensagem: 'id inválido'
             });
         }
-        const cliente = await clienteModel.BuscarPorId
+        const cliente = await clienteModel.BuscarPorId(id);
         if(cliente) {
             res.status(200).json(cliente);
-        }else {
-            res.satus(404).json({
+        } else {
+            res.status(404).json({
                 mensagem: `Cliente ${id} não encontrado`
             });
         }
     } catch (erro){
-        res.satus(500).json({
+        res.status(500).json({
             mensagem:`Erro ao buscar cliente`,
             erro: erro.message
         });
@@ -39,8 +39,8 @@ async function BuscarPorId(req,res) {
 }
 async function criar(req, res) {
     try{
-        const{nome, cpf, telfone, email, datanasc, rua, numeroCasa, bairro } = req.body;
-        if(!nome || !cpf || !telfone || !email || !datanasc || !rua || !numeroCasa || !bairro ) {
+        const{nome, cpf, email, telefone } = req.body;
+        if(!nome || !cpf || !email || !telefone) {
             return res.status(400).json({
                 mensagem: 'Todos os campos são obrigatórios '
             });
@@ -48,16 +48,12 @@ async function criar(req, res) {
       const novoCliente = await clienteModel.criar({
         nome, 
         cpf, 
-        telfone, 
         email,
-        datanasc,
-        rua,
-        numeroCasa,
-        bairro
+        telefone 
       });
     res.status(201).json(novoCliente)
-    }catch (erro){
-        res.satus(500).json({
+    } catch (erro) {
+        res.status(500).json({
             mensagem: 'Erro ao criar produto',
             erro: erro.message
         });
@@ -67,41 +63,37 @@ async function criar(req, res) {
 async function atualizar(req, res) {
     try{
         const id = parseInt(req.params.id); 
-        const {nome, cpf, telfone, email, datanasc, rua, numeroCasa, bairro} = req.body; 
+        const {nome, cpf, email, telefone} = req.body; 
 
-        if(idNaN(id)) {
-            return res.satus(400).json({
-                mensagem: 'iD inválido'
+        if(isNaN(id)) {
+            return res.status(400).json({
+                mensagem: 'ID inválido'
             });
         }
-         if(!nome || !cpf || !telfone || !email || !datanasc || !rua || !numeroCasa || !bairro ) {
+        if(!nome || !cpf || !email || !telefone ) {
             return res.status(400).json({
                 mensagem: 'Todos os campos são obrigatórios '
             });
         }
-         const clienteAtualizado = await clienteModel.criar({
-        nome, 
-        cpf, 
-        telfone, 
-        email,
-        datanasc,
-        rua,
-        numeroCasa,
-        bairro
-      }); 
-      if(clienteAtualizado){
-        res.satus(200).json(clienteAtualizado)
-    } else {
-        res.satus(404).json({
-            mensagem: `Cliente ${id} não encontrado`
+        const clienteAtualizado = await clienteModel.atualizar(id, {
+            nome, 
+            cpf, 
+            email,
+            telefone
+        }); 
+        if(clienteAtualizado){
+            res.status(200).json(clienteAtualizado)
+        } else {
+            res.status(404).json({
+                mensagem: `Cliente ${id} não encontrado`
+            })
+        }
+    } catch (erro){
+        res.status(500).json({
+            mensagem: 'Erro ao atualizar cliente',
+            erro: erro.message 
         })
-    }
- }catch (erro){
-    res.status(500).json({
-          mensagem: 'Erro ao atualizar cliente',
-      erro: erro.message 
-    })
- }  
+    }  
 }
 
 async function deletar(req, res) {

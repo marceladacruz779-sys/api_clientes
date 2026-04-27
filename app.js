@@ -4,10 +4,10 @@ const express = require('express');
 const app = express();
 
 const PORT = process.env.PORT || 3000;
-
+app.use(express.static('./public'));
 app.use(express.json()); 
 
-const clienteRoutes = require('./routes/clienteRoutes');
+const clienteRoutes = require('./src/routes/clienteRoutes');
 app.use('/clientes', clienteRoutes);
 
 app.get('/', (req, res) => {
@@ -18,6 +18,7 @@ app.get('/', (req, res) => {
     banco: 'PostgreSQL'
   });
 });
+
 
 app.listen(PORT, () => {
   console.log('='.repeat(50));
